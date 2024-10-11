@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Olers_Artman_-str-m" />
+        <module name="Library-System" />
       </profile>
     </annotationProcessing>
   </component>
