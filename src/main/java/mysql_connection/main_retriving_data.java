@@ -27,6 +27,8 @@ public class main_retriving_data {
 
 
   public static void main(String[] args) {
-getBooks();
+    // Initialize database with tables and sample data
+    DatabaseInitializer.initializeDatabase();
+    getBooks();
   }
   }

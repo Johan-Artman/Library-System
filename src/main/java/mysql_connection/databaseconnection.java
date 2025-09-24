@@ -13,11 +13,9 @@ public class databaseconnection {
   public static Connection getConnection() {
     Connection connection = null;
     try {
-      String url = "jdbc:mysql://localhost:3304/bibliotek";
-      String username = "dbconnect";
-      String password = "Pineapple123.";
-      connection = DriverManager.getConnection(url, username, password);
-      log.info("Connected to the database!");
+      String url = "jdbc:sqlite:library.db"; // SQLite database file
+      connection = DriverManager.getConnection(url);
+      log.info("Connected to the SQLite database!");
     } catch (SQLException e) {
       log.error("Connection error: " + e.getMessage());
     }
