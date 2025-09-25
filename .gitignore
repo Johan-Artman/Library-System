@@ -1,0 +1,21 @@
+# Maven build outputs
+target/
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+app.log
+
+# SQLite database file (if you want to exclude it)
+# library.db

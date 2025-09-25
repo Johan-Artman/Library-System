@@ -738,3 +738,5 @@ org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no suc
 	at textinterface.textinterface_Main.main(textinterface_Main.java:33) ~[classes/:?]
 	at org.codehaus.mojo.exec.ExecJavaMojo$1.run(ExecJavaMojo.java:279) ~[?:?]
 	at java.lang.Thread.run(Thread.java:1583) [?:?]
+2025-09-25 11:23:43,267 INFO buggaren [main] mysql_connection.databaseconnection - getConnection - Connected to the SQLite database!
+2025-09-25 11:25:33,171 INFO buggaren [main] mysql_connection.databaseconnection - getConnection - Connected to the SQLite database!
