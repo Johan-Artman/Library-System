@@ -15,5 +15,5 @@ exceptions/MemberExistsException.class
 classes/Book.class
 classes/Member.class
 classes/MemberStore.class
-textinterface/textinterface_Main.class
 classes/LendingStore.class
+textinterface/textinterface_Main.class
