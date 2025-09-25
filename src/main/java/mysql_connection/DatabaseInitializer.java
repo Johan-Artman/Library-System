@@ -13,6 +13,14 @@ public class DatabaseInitializer {
         try (Connection connection = databaseconnection.getConnection();
              Statement statement = connection.createStatement()) {
             
+            // Create member_types table first (needed for foreign key)
+            String createMemberTypesTable = "CREATE TABLE IF NOT EXISTS member_types (" +
+                "id INTEGER PRIMARY KEY, " +
+                "type_name TEXT NOT NULL UNIQUE" +
+                ");";
+            statement.execute(createMemberTypesTable);
+            log.info("Member types table created or already exists");
+            
             // Create books table
             String createBooksTable = "CREATE TABLE IF NOT EXISTS books (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -29,7 +37,8 @@ public class DatabaseInitializer {
                 "firstname TEXT, " +
                 "lastname TEXT, " +
                 "member_type INTEGER, " +
-                "soc_sec_nr TEXT" +
+                "soc_sec_nr TEXT, " +
+                "FOREIGN KEY (member_type) REFERENCES member_types(id)" +
                 ");";
             statement.execute(createMemberTable);
             log.info("Member table created or already exists");
@@ -59,6 +68,15 @@ public class DatabaseInitializer {
                 ");";
             statement.execute(createBorrowingTable);
             log.info("Borrowing table created or already exists");
+            
+            // Insert member types first (needed for foreign key)
+            String insertMemberTypes = "INSERT OR IGNORE INTO member_types (id, type_name) VALUES " +
+                "(1, 'UNDERGRADUATE'), " +
+                "(2, 'POSTGRADUATE'), " +
+                "(3, 'PHD'), " +
+                "(4, 'TEACHER');";
+            statement.execute(insertMemberTypes);
+            log.info("Sample member types inserted");
             
             // Insert sample books
             String insertSampleBooks = "INSERT OR IGNORE INTO books (titel, isbn, availableCopies) VALUES " +

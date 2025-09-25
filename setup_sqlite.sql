@@ -1,5 +1,11 @@
 -- SQLite database setup for Library System
 
+-- Create member_types table first (needed for foreign key)
+CREATE TABLE IF NOT EXISTS member_types (
+    id INTEGER PRIMARY KEY,
+    type_name TEXT NOT NULL UNIQUE
+);
+
 -- Create books table
 CREATE TABLE IF NOT EXISTS books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +20,8 @@ CREATE TABLE IF NOT EXISTS member (
     firstname TEXT,
     lastname TEXT,
     member_type INTEGER,
-    soc_sec_nr TEXT
+    soc_sec_nr TEXT,
+    FOREIGN KEY (member_type) REFERENCES member_types(id)
 );
 
 -- Create member_status table
@@ -38,6 +45,13 @@ CREATE TABLE IF NOT EXISTS borrowing_table (
     FOREIGN KEY (member_id) REFERENCES member(member_id),
     FOREIGN KEY (isbn) REFERENCES books(isbn)
 );
+
+-- Insert member types first (needed for foreign key)
+INSERT OR IGNORE INTO member_types (id, type_name) VALUES 
+(1, 'UNDERGRADUATE'),
+(2, 'POSTGRADUATE'),
+(3, 'PHD'),
+(4, 'TEACHER');
 
 -- Insert sample books
 INSERT OR IGNORE INTO books (titel, isbn, availableCopies) VALUES 
