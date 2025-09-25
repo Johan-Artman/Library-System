@@ -1,0 +1,55 @@
+package controllers;
+
+import classes.Book;
+import classes.LibraryStoreManager;
+import classes.CurrentDate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/books")
+@CrossOrigin(origins = "http://localhost:4200")
+public class BookController {
+    
+    private final LibraryStoreManager libraryManager;
+    
+    public BookController() {
+        this.libraryManager = new LibraryStoreManager(new CurrentDate());
+    }
+    
+    @GetMapping("/{isbn}")
+    public ResponseEntity<?> getBook(@PathVariable long isbn) {
+        try {
+            Optional<Book> book = libraryManager.getBookByISBN(isbn);
+            if (book.isPresent()) {
+                return ResponseEntity.ok(book.get());
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
+    }
+    
+    @PutMapping("/{isbn}/copies")
+    public ResponseEntity<?> updateBookCopies(@PathVariable long isbn, @RequestParam int copies) {
+        try {
+            libraryManager.UpdateBookCopies(isbn, copies);
+            return ResponseEntity.ok().body("{\"message\": \"Book copies updated successfully\"}");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(@RequestParam(required = false) String title) {
+        try {
+            // For now, we'll just return a simple response
+            // You can extend this to search by title if needed
+            return ResponseEntity.ok().body("{\"message\": \"Search functionality - extend as needed\"}");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
+    }
+}
