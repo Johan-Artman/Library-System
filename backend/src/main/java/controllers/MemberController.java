@@ -10,16 +10,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/members")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"})
 public class MemberController {
     
     private final LibraryStoreManager libraryManager;
     
     public MemberController() {
         this.libraryManager = new LibraryStoreManager(new CurrentDate());
+    }
+    
+    @GetMapping
+    public ResponseEntity<?> getAllMembers() {
+        try {
+            List<Member> members = libraryManager.getAllMembers();
+            return ResponseEntity.ok(members);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
     }
     
     @PostMapping

@@ -10,13 +10,23 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"})
 public class BookController {
     
     private final LibraryStoreManager libraryManager;
     
     public BookController() {
         this.libraryManager = new LibraryStoreManager(new CurrentDate());
+    }
+    
+    @GetMapping
+    public ResponseEntity<?> getAllBooks() {
+        try {
+            java.util.List<Book> books = libraryManager.getAllBooks();
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
     }
     
     @GetMapping("/{isbn}")

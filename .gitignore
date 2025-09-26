@@ -2,6 +2,18 @@
 target/
 *.class
 
+# Node.js and npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Angular build outputs
+/frontend/dist/
+/frontend/.angular/
+/frontend/tmp/
+
 # IDE files
 .idea/
 .vscode/
@@ -16,6 +28,43 @@ Thumbs.db
 # Logs
 *.log
 app.log
+backend.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Spring Boot specific
+*.jar
+*.war
+*.ear
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
 
 # SQLite database file (if you want to exclude it)
 # library.db
+
+# Compiled TypeScript
+*.tsbuildinfo
+
+# Angular specific
+/frontend/.angular/
+/frontend/dist/

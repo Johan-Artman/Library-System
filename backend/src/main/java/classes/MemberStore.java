@@ -27,6 +27,27 @@ public class MemberStore {
         this.currentDate = currentDate; // Assign the passed currentDate
     }
 
+    public List<Member> getAllMembersStore() throws SQLException {
+        List<Member> members = new ArrayList<>();
+        String sql = "SELECT * FROM members";
+        
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            
+            while (resultSet.next()) {
+                Member member = new Member(
+                    resultSet.getInt("id"),
+                    resultSet.getString("firstname"),
+                    resultSet.getString("lastname"),
+                    resultSet.getInt("member_type"),
+                    resultSet.getString("social_security_number")
+                );
+                members.add(member);
+            }
+        }
+        return members;
+    }
+
 
     public void resetSuspensionsStore(CurrentDate currentDate) {
         LocalDate today = currentDate.getCurrentDate();

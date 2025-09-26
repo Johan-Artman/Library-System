@@ -1,0 +1,107 @@
+<div class="members-container">
+  <h2>Library Members</h2>
+  
+  <!-- Add New Member Button -->
+  <div class="actions">
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      {{ showAddForm ? 'Cancel' : 'Add New Member' }}
+    </button>
+  </div>
+
+  <!-- Add Member Form -->
+  <div class="add-member-form" *ngIf="showAddForm">
+    <h3>Add New Member</h3>
+    <form (ngSubmit)="addMember()" #addForm="ngForm">
+      <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" [(ngModel)]="newMemberRequest.firstname" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" [(ngModel)]="newMemberRequest.lastname" required>
+      </div>
+      <div class="form-group">
+        <label for="socSecNr">Social Security Number:</label>
+        <input type="text" id="socSecNr" name="socSecNr" [(ngModel)]="newMemberRequest.socSecNr" required>
+      </div>
+      <div class="form-group">
+        <label for="memberType">Member Type:</label>
+        <select id="memberType" name="memberType" [(ngModel)]="newMemberRequest.memberType" required>
+          <option [value]="MemberType.UNDERGRADUATE">Undergraduate</option>
+          <option [value]="MemberType.POSTGRADUATE">Postgraduate</option>
+          <option [value]="MemberType.PHD">PhD</option>
+          <option [value]="MemberType.TEACHER">Teacher</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success" [disabled]="!addForm.valid">Add Member</button>
+        <button type="button" class="btn btn-secondary" (click)="toggleAddForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Members List -->
+  <div class="members-list">
+    <table class="members-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Social Security Number</th>
+          <th>Member Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>{{ member.id }}</td>
+          <td>{{ member.firstName }} {{ member.lastName }}</td>
+          <td>{{ member.socialSecNr }}</td>
+                    <td>{{ member.socialSecNr }}</td>
+          <td>
+            <span *ngIf="member.memberType === 1">Undergraduate</span>
+            <span *ngIf="member.memberType === 2">Postgraduate</span>
+            <span *ngIf="member.memberType === 3">PhD</span>
+            <span *ngIf="member.memberType === 4">Teacher</span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="selectMember(member)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteMember(member.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Member Form -->
+  <div class="edit-member-form" *ngIf="selectedMember">
+    <h3>Edit Member</h3>
+    <form (ngSubmit)="updateMember()" #editForm="ngForm">
+      <div class="form-group">
+        <label for="editFirstName">First Name:</label>
+        <input type="text" id="editFirstName" name="editFirstName" [(ngModel)]="selectedMember.firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="editLastName">Last Name:</label>
+        <input type="text" id="editLastName" name="editLastName" [(ngModel)]="selectedMember.lastName" required>
+      </div>
+      <div class="form-group">
+        <label for="editSocialSecNr">Social Security Number:</label>
+        <input type="text" id="editSocialSecNr" name="editSocialSecNr" [(ngModel)]="selectedMember.socialSecNr" required>
+      </div>
+      <div class="form-group">
+        <label for="editMemberType">Member Type:</label>
+        <select id="editMemberType" name="editMemberType" [(ngModel)]="selectedMember.memberType" required>
+          <option [value]="1">Undergraduate</option>
+          <option [value]="2">Postgraduate</option>
+          <option [value]="3">PhD</option>
+          <option [value]="4">Teacher</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Update Member</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

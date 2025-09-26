@@ -42,6 +42,28 @@ public class BookStore {
             return Optional.empty();
         }
 
+        public java.util.List<Book> getAllBooksStore() {
+            logger.info("Entering getAllBooksStore");
+            java.util.List<Book> books = new java.util.ArrayList<>();
+            String getAllBooksQuery = "SELECT isbn, titel, availableCopies FROM books;";
+            
+            try (PreparedStatement statement = connection.prepareStatement(getAllBooksQuery)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    long isbn = resultSet.getLong("isbn");
+                    String title = resultSet.getString("titel");
+                    int availableCopies = resultSet.getInt("availableCopies");
+                    books.add(new Book(isbn, title, availableCopies));
+                }
+                logger.info("Exiting getAllBooksStore with {} books found", books.size());
+            } catch (SQLException e) {
+                logger.error("SQL exception in getAllBooksStore", e);
+                throw new RuntimeException("Error retrieving all books", e);
+            }
+            
+            return books;
+        }
+
         public void addBookStore(IBook book) {
             logger.info("Entering addBookStore with IBook: {}", book);
             String addbookquery = "INSERT INTO books (isbn, titel, antal) VALUES (?, ?, ?);";

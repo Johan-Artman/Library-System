@@ -105,9 +105,21 @@ public class LibraryStoreManager {
         return book;
     }
 
+    public java.util.List<Book> getAllBooks() {
+        return bookStore.getAllBooksStore();
+    }
 
     public Optional<Member> getMemberById(int memberId) {
         return memberStore.getMemberByIdStore(memberId);
+    }
+
+    public List<Member> getAllMembers() {
+        try {
+            return memberStore.getAllMembersStore();
+        } catch (SQLException e) {
+            System.err.println("Error getting all members: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public boolean isSuspendedMember(int memberId) {
