@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MemberService } from '../../services/member.service';
+import { RoleService } from '../../services/role.service';
 import { Member, MemberRequest, MemberType } from '../../models/member.model';
 
 @Component({
@@ -18,10 +20,23 @@ export class MembersComponent implements OnInit {
   showAddForm = false;
   MemberType = MemberType;
 
-  constructor(private memberService: MemberService) { }
+  constructor(
+    private memberService: MemberService,
+    private roleService: RoleService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    // Check if user is librarian, redirect if not
+    if (!this.roleService.isLibrarian()) {
+      this.router.navigate(['/books']);
+      return;
+    }
     this.loadMembers();
+  }
+
+  get isLibrarian(): boolean {
+    return this.roleService.isLibrarian();
   }
 
   loadMembers(): void {

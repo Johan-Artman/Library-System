@@ -1,0 +1,78 @@
+<div class="library-map-container">
+  <h3>Library Floor Plan</h3>
+  
+  <div class="map-wrapper">
+    <svg [attr.width]="libraryWidth" [attr.height]="libraryHeight" class="library-floor">
+      <!-- Floor background -->
+      <rect x="0" y="0" [attr.width]="libraryWidth" [attr.height]="libraryHeight" 
+            class="floor-bg" />
+      
+      <!-- Library sections -->
+      <rect x="10" y="10" width="180" height="100" class="section fiction" />
+      <text x="100" y="65" class="section-label">Fiction A-M</text>
+      
+      <rect x="200" y="10" width="180" height="100" class="section classics" />
+      <text x="290" y="65" class="section-label">Classic Literature</text>
+      
+      <rect x="10" y="120" width="180" height="100" class="section fiction" />
+      <text x="100" y="175" class="section-label">Fiction N-Z</text>
+      
+      <rect x="200" y="120" width="180" height="100" class="section nonfiction" />
+      <text x="290" y="175" class="section-label">Non-Fiction</text>
+      
+      <!-- Entrance -->
+      <rect x="20" y="270" width="60" height="20" class="entrance" />
+      <text x="50" y="285" class="entrance-label">Entrance</text>
+      
+      <!-- Book locations -->
+      <g *ngFor="let book of visibleBookLocations">
+        <circle [attr.cx]="book.x" [attr.cy]="book.y" r="8" 
+                class="book-marker"
+                [class.selected]="book.isbn === selectedBookIsbn"
+                (click)="moveToBook(book.isbn)"
+                [title]="book.title + ' - ' + book.description">
+        </circle>
+        <text [attr.x]="book.x" [attr.y]="book.y - 12" class="book-label">
+          📚
+        </text>
+      </g>
+      
+      <!-- User location -->
+      <g *ngIf="userLocation">
+        <circle [attr.cx]="userLocation.x" [attr.cy]="userLocation.y" r="10" 
+                class="user-marker" [title]="userLocation.description">
+        </circle>
+        <text [attr.x]="userLocation.x" [attr.y]="userLocation.y + 5" class="user-label">
+          👤
+        </text>
+      </g>
+    </svg>
+  </div>
+  
+  <!-- Location info -->
+  <div class="location-info">
+    <div class="current-location" *ngIf="userLocation">
+      <strong>Your current location:</strong> {{ userLocation.description }}
+      <small>({{ userLocation.x }}, {{ userLocation.y }})</small>
+    </div>
+    
+    <div class="selected-book-info" *ngIf="selectedBookLocation">
+      <strong>Selected book location:</strong> {{ selectedBookLocation.title }}
+      <br>
+      <small>{{ selectedBookLocation.description }} ({{ selectedBookLocation.x }}, {{ selectedBookLocation.y }})</small>
+    </div>
+  </div>
+  
+  <!-- Legend -->
+  <div class="map-legend">
+    <div class="legend-item">
+      <span class="legend-marker user">👤</span> Your Location
+    </div>
+    <div class="legend-item">
+      <span class="legend-marker book">📚</span> Book Location
+    </div>
+    <div class="legend-item" *ngIf="selectedBookLocation">
+      <span class="legend-marker book selected">📚</span> Selected Book
+    </div>
+  </div>
+</div>

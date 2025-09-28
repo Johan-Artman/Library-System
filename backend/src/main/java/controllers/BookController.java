@@ -55,9 +55,15 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(@RequestParam(required = false) String title) {
         try {
-            // For now, we'll just return a simple response
-            // You can extend this to search by title if needed
-            return ResponseEntity.ok().body("{\"message\": \"Search functionality - extend as needed\"}");
+            if (title == null || title.trim().isEmpty()) {
+                // If no title provided, return all books
+                java.util.List<Book> books = libraryManager.getAllBooks();
+                return ResponseEntity.ok(books);
+            } else {
+                // Search by title
+                java.util.List<Book> books = libraryManager.searchBooksByTitle(title.trim());
+                return ResponseEntity.ok(books);
+            }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
         }

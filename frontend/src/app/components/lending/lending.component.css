@@ -1,0 +1,36 @@
+.lending-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lending-container h2 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.coming-soon .icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.coming-soon p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0.5rem 0;
+}
+
+.coming-soon .subtitle {
+  font-size: 1rem;
+  font-style: italic;
+}

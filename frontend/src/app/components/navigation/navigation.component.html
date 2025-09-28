@@ -1,13 +1,24 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="currentUser">
   <div class="navbar-brand">
     <h1>📖 Library Management System</h1>
   </div>
-  <ul class="navbar-nav">
-    <li class="nav-item" *ngFor="let item of menuItems">
-      <a class="nav-link" [routerLink]="item.path" routerLinkActive="active">
-        <span class="nav-icon">{{ item.icon }}</span>
-        <span class="nav-label">{{ item.label }}</span>
-      </a>
-    </li>
-  </ul>
+  <div class="navbar-center">
+    <ul class="navbar-nav">
+      <li class="nav-item" *ngFor="let item of visibleMenuItems">
+        <a class="nav-link" [routerLink]="item.path" routerLinkActive="active">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-user">
+    <div class="user-info">
+      <span class="user-name">{{ userDisplayName }}</span>
+      <span class="user-role">{{ userRole }}</span>
+    </div>
+    <button class="logout-btn" (click)="logout()" title="Logout">
+      <span class="logout-icon">🚪</span>
+    </button>
+  </div>
 </nav>

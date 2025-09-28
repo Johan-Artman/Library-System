@@ -1,0 +1,182 @@
+.library-map-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+.library-map-container h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+}
+
+.map-wrapper {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.library-floor {
+  border: 2px solid #2c3e50;
+  border-radius: 8px;
+  background: #f8f9fa;
+  max-width: 100%;
+  height: auto;
+}
+
+.floor-bg {
+  fill: #ecf0f1;
+  stroke: none;
+}
+
+.section {
+  stroke: #34495e;
+  stroke-width: 2;
+  opacity: 0.8;
+}
+
+.section.fiction {
+  fill: #e8f5e8;
+}
+
+.section.classics {
+  fill: #f0e8f5;
+}
+
+.section.nonfiction {
+  fill: #e8f0f5;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-anchor: middle;
+  fill: #2c3e50;
+}
+
+.entrance {
+  fill: #f39c12;
+  stroke: #e67e22;
+  stroke-width: 2;
+}
+
+.entrance-label {
+  font-size: 10px;
+  font-weight: bold;
+  text-anchor: middle;
+  fill: white;
+}
+
+.book-marker {
+  fill: #3498db;
+  stroke: #2980b9;
+  stroke-width: 2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.book-marker:hover {
+  fill: #2980b9;
+  transform: scale(1.2);
+}
+
+.book-marker.selected {
+  fill: #e74c3c;
+  stroke: #c0392b;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.book-label {
+  font-size: 12px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.user-marker {
+  fill: #27ae60;
+  stroke: #229954;
+  stroke-width: 2;
+  animation: userPulse 2s infinite;
+}
+
+@keyframes userPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.user-label {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: white;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.location-info {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+  border-left: 4px solid #3498db;
+}
+
+.current-location, .selected-book-info {
+  margin-bottom: 0.5rem;
+}
+
+.current-location strong, .selected-book-info strong {
+  color: #2c3e50;
+}
+
+.current-location small, .selected-book-info small {
+  color: #7f8c8d;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.map-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.legend-marker {
+  font-size: 1.2rem;
+}
+
+.legend-marker.selected {
+  animation: pulse 1.5s infinite;
+}
+
+@media (max-width: 768px) {
+  .library-map-container {
+    padding: 1rem;
+  }
+  
+  .library-floor {
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .map-legend {
+    justify-content: center;
+  }
+}
