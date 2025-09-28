@@ -1,8 +1,23 @@
 <div class="books-container">
   <h2>Library Books</h2>
   
-  <!-- Search Section -->
-  <div class="search-section">
+  <!-- Search Section -      <thead>
+        <tr>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Available Copies</th>
+          <th>Location</th>
+          <th>Floor</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.availableCopies }}</td>
+          <td>{{ book.shelfLocation }}</td>
+          <td>Floor {{ book.floorLevel }}</td>ss="search-section">
     <div class="search-bar">
       <input 
         type="text" 
@@ -24,14 +39,20 @@
     </p>
   </div>
   
-  <!-- Actions (Only for Librarians) -->
-  <div class="actions" *ngIf="isLibrarian">
+    <!-- Actions -->
+  <div class="actions">
     <button class="btn btn-primary" (click)="toggleAddForm()">
       {{ showAddForm ? 'Cancel' : 'Add New Book' }}
     </button>
-    <button class="btn btn-secondary" (click)="toggleLocationView()">
-      {{ showLocation ? 'Hide Location' : 'Show All Locations' }}
-    </button>
+    <div class="filter-section">
+      <label for="floorFilter">Filter by Floor:</label>
+      <select id="floorFilter" (change)="filterByFloor($event)">
+        <option value="">All Floors</option>
+        <option value="1">Floor 1</option>
+        <option value="2">Floor 2</option>
+        <option value="3">Floor 3</option>
+      </select>
+    </div>
   </div>
 
   <!-- Actions for Lenders -->
@@ -56,6 +77,18 @@
       <div class="form-group">
         <label for="availableCopies">Available Copies:</label>
         <input type="number" id="availableCopies" name="availableCopies" [(ngModel)]="newBook.availableCopies" required min="0">
+      </div>
+      <div class="form-group">
+        <label for="shelfLocation">Shelf Location:</label>
+        <input type="text" id="shelfLocation" name="shelfLocation" [(ngModel)]="newBook.shelfLocation" required>
+      </div>
+      <div class="form-group">
+        <label for="floorLevel">Floor Level:</label>
+        <select id="floorLevel" name="floorLevel" [(ngModel)]="newBook.floorLevel" required>
+          <option value="1">Floor 1</option>
+          <option value="2">Floor 2</option>
+          <option value="3">Floor 3</option>
+        </select>
       </div>
       <div class="form-actions">
         <button type="submit" class="btn btn-success" [disabled]="!addForm.valid">Add Book</button>
@@ -110,6 +143,18 @@
       <div class="form-group">
         <label for="editAvailableCopies">Available Copies:</label>
         <input type="number" id="editAvailableCopies" name="editAvailableCopies" [(ngModel)]="selectedBook.availableCopies" required min="0">
+      </div>
+      <div class="form-group">
+        <label for="editShelfLocation">Shelf Location:</label>
+        <input type="text" id="editShelfLocation" name="editShelfLocation" [(ngModel)]="selectedBook.shelfLocation" required>
+      </div>
+      <div class="form-group">
+        <label for="editFloorLevel">Floor Level:</label>
+        <select id="editFloorLevel" name="editFloorLevel" [(ngModel)]="selectedBook.floorLevel" required>
+          <option value="1">Floor 1</option>
+          <option value="2">Floor 2</option>
+          <option value="3">Floor 3</option>
+        </select>
       </div>
       <div class="form-actions">
         <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Update Book</button>

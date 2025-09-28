@@ -22,7 +22,7 @@ public class BookStore {
         public Optional<Book> getBookByISBNStore(long isbn) {
             logger.info("Entering getBookByISBNStore with ISBN: {}", isbn);
 
-            String queryisbn = "SELECT isbn, titel, availableCopies FROM books WHERE isbn = ?;";
+            String queryisbn = "SELECT isbn, titel, availableCopies, shelf_location, floor_level FROM books WHERE isbn = ?;";
 
             try (PreparedStatement statementisbn = connection.prepareStatement(queryisbn)) {
                 statementisbn.setLong(1, isbn);
@@ -30,9 +30,11 @@ public class BookStore {
                 if (resultSet.next()) {
                     String title = resultSet.getString("titel");
                     int availableCopies = resultSet.getInt("availableCopies");
-                    Book booktologger = new Book(isbn, title, availableCopies);
-                    logger.info("Exiting getBookByISBNStore with result: {}", booktologger);
-                    return Optional.of(new Book(isbn, title, availableCopies));
+                    String shelfLocation = resultSet.getString("shelf_location");
+                    int floorLevel = resultSet.getInt("floor_level");
+                    Book book = new Book(isbn, title, availableCopies, shelfLocation, floorLevel);
+                    logger.info("Exiting getBookByISBNStore with result: {}", book);
+                    return Optional.of(book);
                 }
             } catch (SQLException e) {
                 logger.error("SQL exception in getBookByISBNStore", e);
@@ -45,7 +47,7 @@ public class BookStore {
         public java.util.List<Book> getAllBooksStore() {
             logger.info("Entering getAllBooksStore");
             java.util.List<Book> books = new java.util.ArrayList<>();
-            String getAllBooksQuery = "SELECT isbn, titel, availableCopies FROM books;";
+            String getAllBooksQuery = "SELECT isbn, titel, availableCopies, shelf_location, floor_level FROM books;";
             
             try (PreparedStatement statement = connection.prepareStatement(getAllBooksQuery)) {
                 ResultSet resultSet = statement.executeQuery();
@@ -53,7 +55,9 @@ public class BookStore {
                     long isbn = resultSet.getLong("isbn");
                     String title = resultSet.getString("titel");
                     int availableCopies = resultSet.getInt("availableCopies");
-                    books.add(new Book(isbn, title, availableCopies));
+                    String shelfLocation = resultSet.getString("shelf_location");
+                    int floorLevel = resultSet.getInt("floor_level");
+                    books.add(new Book(isbn, title, availableCopies, shelfLocation, floorLevel));
                 }
                 logger.info("Exiting getAllBooksStore with {} books found", books.size());
             } catch (SQLException e) {
@@ -82,6 +86,31 @@ public class BookStore {
             } catch (SQLException e) {
                 logger.error("SQL exception in searchBooksByTitle", e);
                 throw new RuntimeException("Error searching books by title", e);
+            }
+            
+            return books;
+        }
+
+        public java.util.List<Book> getBooksByFloor(int floorLevel) {
+            logger.info("Entering getBooksByFloor with floor level: {}", floorLevel);
+            java.util.List<Book> books = new java.util.ArrayList<>();
+            String query = "SELECT isbn, titel, availableCopies, shelf_location, floor_level FROM books WHERE floor_level = ?;";
+            
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, floorLevel);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    long isbn = resultSet.getLong("isbn");
+                    String title = resultSet.getString("titel");
+                    int availableCopies = resultSet.getInt("availableCopies");
+                    String shelfLocation = resultSet.getString("shelf_location");
+                    int floor = resultSet.getInt("floor_level");
+                    books.add(new Book(isbn, title, availableCopies, shelfLocation, floor));
+                }
+                logger.info("Exiting getBooksByFloor with {} books found", books.size());
+            } catch (SQLException e) {
+                logger.error("SQL exception in getBooksByFloor", e);
+                throw new RuntimeException("Error retrieving books by floor", e);
             }
             
             return books;

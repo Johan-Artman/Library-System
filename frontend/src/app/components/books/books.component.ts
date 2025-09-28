@@ -152,7 +152,9 @@ export class BooksComponent implements OnInit {
     return {
       isbn: 0,
       title: '',
-      availableCopies: 0
+      availableCopies: 0,
+      shelfLocation: 'General',
+      floorLevel: 1
     };
   }
 
@@ -164,6 +166,17 @@ export class BooksComponent implements OnInit {
     this.showAddForm = !this.showAddForm;
     if (!this.showAddForm) {
       this.newBook = this.createEmptyBook();
+    }
+  }
+
+  filterByFloor(event: any): void {
+    const selectedFloor = event.target.value;
+    if (selectedFloor === '') {
+      this.filteredBooks = [...this.books];
+    } else {
+      this.filteredBooks = this.books.filter(book => 
+        book.floorLevel === parseInt(selectedFloor)
+      );
     }
   }
 }

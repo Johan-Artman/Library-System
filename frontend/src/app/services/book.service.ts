@@ -38,4 +38,8 @@ export class BookService {
       return this.getAllBooks();
     }
   }
+
+  getBooksByFloor(floorLevel: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/floor/${floorLevel}`);
+  }
 }

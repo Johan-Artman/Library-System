@@ -30,6 +30,11 @@ Thumbs.db
 app.log
 backend.log
 
+# Database files
+*.db
+library.db
+/backend/library.db
+
 # Environment variables
 .env
 .env.local
@@ -68,3 +73,48 @@ coverage/
 # Angular specific
 /frontend/.angular/
 /frontend/dist/
+
+# Spring Boot JAR files (built artifacts)
+*.jar
+!**/src/main/**/*.jar
+!**/src/test/**/*.jar
+
+# Maven wrapper (if added later)
+.mvn/wrapper/maven-wrapper.properties
+
+# Temporary files
+*.tmp
+*.temp
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Linux
+*~
+
+# Editor backup files
+*.bak
+*.swp
+*.swo
+
+# Package files
+*.zip
+*.tar.gz
+*.rar
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Java heap dumps
+*.hprof
+
+# Application properties with sensitive data (if any)
+application-prod.properties
+application-secret.properties

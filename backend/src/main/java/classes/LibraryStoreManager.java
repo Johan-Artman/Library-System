@@ -114,6 +114,10 @@ public class LibraryStoreManager {
         return bookStore.searchBooksByTitle(title);
     }
 
+    public java.util.List<Book> getBooksByFloor(int floorLevel) {
+        return bookStore.getBooksByFloor(floorLevel);
+    }
+
     public Optional<Member> getMemberById(int memberId) {
         return memberStore.getMemberByIdStore(memberId);
     }

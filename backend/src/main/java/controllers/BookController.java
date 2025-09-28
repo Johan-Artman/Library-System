@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201", "http://127.0.0.1:4200", "http://127.0.0.1:4201"})
 public class BookController {
     
     private final LibraryStoreManager libraryManager;
@@ -64,6 +64,16 @@ public class BookController {
                 java.util.List<Book> books = libraryManager.searchBooksByTitle(title.trim());
                 return ResponseEntity.ok(books);
             }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
+        }
+    }
+
+    @GetMapping("/floor/{floorLevel}")
+    public ResponseEntity<?> getBooksByFloor(@PathVariable int floorLevel) {
+        try {
+            java.util.List<Book> books = libraryManager.getBooksByFloor(floorLevel);
+            return ResponseEntity.ok(books);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("{\"error\": \"Internal server error\"}");
         }

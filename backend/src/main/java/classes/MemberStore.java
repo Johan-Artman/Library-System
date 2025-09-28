@@ -29,18 +29,18 @@ public class MemberStore {
 
     public List<Member> getAllMembersStore() throws SQLException {
         List<Member> members = new ArrayList<>();
-        String sql = "SELECT * FROM members";
+        String sql = "SELECT * FROM member";
         
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             
             while (resultSet.next()) {
                 Member member = new Member(
-                    resultSet.getInt("id"),
+                    resultSet.getInt("member_id"),
                     resultSet.getString("firstname"),
                     resultSet.getString("lastname"),
                     resultSet.getInt("member_type"),
-                    resultSet.getString("social_security_number")
+                    resultSet.getString("soc_sec_nr")
                 );
                 members.add(member);
             }
