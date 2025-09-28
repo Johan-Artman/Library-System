@@ -64,6 +64,29 @@ public class BookStore {
             return books;
         }
 
+        public java.util.List<Book> searchBooksByTitle(String title) {
+            logger.info("Entering searchBooksByTitle with title: {}", title);
+            java.util.List<Book> books = new java.util.ArrayList<>();
+            String searchQuery = "SELECT isbn, titel, availableCopies FROM books WHERE LOWER(titel) LIKE LOWER(?);";
+            
+            try (PreparedStatement statement = connection.prepareStatement(searchQuery)) {
+                statement.setString(1, "%" + title + "%");
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    long isbn = resultSet.getLong("isbn");
+                    String bookTitle = resultSet.getString("titel");
+                    int availableCopies = resultSet.getInt("availableCopies");
+                    books.add(new Book(isbn, bookTitle, availableCopies));
+                }
+                logger.info("Exiting searchBooksByTitle with {} books found", books.size());
+            } catch (SQLException e) {
+                logger.error("SQL exception in searchBooksByTitle", e);
+                throw new RuntimeException("Error searching books by title", e);
+            }
+            
+            return books;
+        }
+
         public void addBookStore(IBook book) {
             logger.info("Entering addBookStore with IBook: {}", book);
             String addbookquery = "INSERT INTO books (isbn, titel, antal) VALUES (?, ?, ?);";

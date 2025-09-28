@@ -1,0 +1,47 @@
+<div class="role-selection-container">
+  <div class="login-card">
+    <h1>📖 Library Management System</h1>
+    <p class="welcome-text">Welcome! Please select your role to continue.</p>
+    
+    <div class="role-options">
+      <div 
+        class="role-card" 
+        [class.selected]="selectedRole === UserRole.LIBRARIAN"
+        (click)="selectRole(UserRole.LIBRARIAN)">
+        <div class="role-icon">👨‍💼</div>
+        <h3>{{ getRoleDisplayName(UserRole.LIBRARIAN) }}</h3>
+        <p>{{ getRoleDescription(UserRole.LIBRARIAN) }}</p>
+      </div>
+      
+      <div 
+        class="role-card" 
+        [class.selected]="selectedRole === UserRole.LENDER"
+        (click)="selectRole(UserRole.LENDER)">
+        <div class="role-icon">👨‍🎓</div>
+        <h3>{{ getRoleDisplayName(UserRole.LENDER) }}</h3>
+        <p>{{ getRoleDescription(UserRole.LENDER) }}</p>
+      </div>
+    </div>
+
+    <div class="login-form" *ngIf="selectedRole">
+      <div class="form-group">
+        <label for="userName">Your Name:</label>
+        <input 
+          type="text" 
+          id="userName" 
+          name="userName" 
+          [(ngModel)]="userName" 
+          placeholder="Enter your name"
+          class="form-control"
+          required>
+      </div>
+      
+      <button 
+        class="btn btn-primary login-btn" 
+        (click)="login()" 
+        [disabled]="!userName.trim()">
+        Continue as {{ getRoleDisplayName(selectedRole) }}
+      </button>
+    </div>
+  </div>
+</div>

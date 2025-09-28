@@ -109,6 +109,11 @@ public class LibraryStoreManager {
         return bookStore.getAllBooksStore();
     }
 
+    public java.util.List<Book> searchBooksByTitle(String title) {
+        logger.info("Searching books by title: {}", title);
+        return bookStore.searchBooksByTitle(title);
+    }
+
     public Optional<Member> getMemberById(int memberId) {
         return memberStore.getMemberByIdStore(memberId);
     }

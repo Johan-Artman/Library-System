@@ -1,15 +1,48 @@
 <div class="books-container">
   <h2>Library Books</h2>
   
-  <!-- Actions -->
-  <div class="actions">
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search books by title..." 
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="searchBooks()"
+        (input)="searchQuery.length === 0 ? clearSearch() : null">
+      <button class="btn btn-search" (click)="searchBooks()" [disabled]="isSearching">
+        <span *ngIf="!isSearching">🔍</span>
+        <span *ngIf="isSearching">⏳</span>
+      </button>
+      <button class="btn btn-clear" (click)="clearSearch()" *ngIf="searchQuery.length > 0">
+        ✕
+      </button>
+    </div>
+    <p class="search-results" *ngIf="searchQuery.length > 0">
+      {{ filteredBooks.length }} result(s) for "{{ searchQuery }}"
+    </p>
+  </div>
+  
+  <!-- Actions (Only for Librarians) -->
+  <div class="actions" *ngIf="isLibrarian">
     <button class="btn btn-primary" (click)="toggleAddForm()">
       {{ showAddForm ? 'Cancel' : 'Add New Book' }}
     </button>
+    <button class="btn btn-secondary" (click)="toggleLocationView()">
+      {{ showLocation ? 'Hide Location' : 'Show All Locations' }}
+    </button>
   </div>
 
-  <!-- Add Book Form -->
-  <div class="add-book-form" *ngIf="showAddForm">
+  <!-- Actions for Lenders -->
+  <div class="actions" *ngIf="!isLibrarian">
+    <button class="btn btn-secondary" (click)="toggleLocationView()">
+      {{ showLocation ? 'Hide Location' : 'Show Library Map' }}
+    </button>
+  </div>
+
+  <!-- Add Book Form (Only for Librarians) -->
+  <div class="add-book-form" *ngIf="showAddForm && isLibrarian">
     <h3>Add New Book</h3>
     <form (ngSubmit)="addBook()" #addForm="ngForm">
       <div class="form-group">
@@ -43,21 +76,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let book of books">
+        <tr *ngFor="let book of filteredBooks">
           <td>{{ book.isbn }}</td>
           <td>{{ book.title }}</td>
           <td>{{ book.availableCopies }}</td>
           <td class="actions-cell">
-            <button class="btn btn-sm btn-info" (click)="selectBook(book)">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="deleteBook(book.isbn)">Delete</button>
+            <button class="btn btn-sm btn-location" (click)="showBookLocation(book)">📍 Location</button>
+            <button class="btn btn-sm btn-info" (click)="selectBook(book)" *ngIf="isLibrarian">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteBook(book.isbn)" *ngIf="isLibrarian">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredBooks.length === 0">
+          <td [attr.colspan]="4" class="no-results">
+            {{ searchQuery ? 'No books found matching your search.' : 'No books available.' }}
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Edit Book Form -->
-  <div class="edit-book-form" *ngIf="selectedBook">
+  <!-- Edit Book Form (Only for Librarians) -->
+  <div class="edit-book-form" *ngIf="selectedBook && isLibrarian">
     <h3>Edit Book</h3>
     <form (ngSubmit)="updateBook()" #editForm="ngForm">
       <div class="form-group">
@@ -78,4 +117,11 @@
       </div>
     </form>
   </div>
+
+  <!-- Library Map -->
+  <app-library-map 
+    *ngIf="showLocation"
+    [selectedBookIsbn]="selectedBook?.isbn"
+    [showAllBooks]="!selectedBook">
+  </app-library-map>
 </div>

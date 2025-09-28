@@ -30,4 +30,12 @@ export class BookService {
   deleteBook(isbn: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${isbn}`);
   }
+
+  searchBooks(title?: string): Observable<Book[]> {
+    if (title && title.trim()) {
+      return this.http.get<Book[]>(`${this.apiUrl}/search?title=${encodeURIComponent(title.trim())}`);
+    } else {
+      return this.getAllBooks();
+    }
+  }
 }
