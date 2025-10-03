@@ -130,4 +130,38 @@ export class MembersComponent implements OnInit {
       this.newMemberRequest = this.createEmptyMemberRequest();
     }
   }
+
+  trackByMemberId(index: number, member: Member): number {
+    return member.id;
+  }
+
+  getMemberTypeClass(memberType: MemberType): string {
+    switch (memberType) {
+      case MemberType.UNDERGRADUATE:
+        return 'undergraduate';
+      case MemberType.POSTGRADUATE:
+        return 'postgraduate';
+      case MemberType.PHD:
+        return 'phd';
+      case MemberType.TEACHER:
+        return 'teacher';
+      default:
+        return '';
+    }
+  }
+
+  formatMemberType(memberType: MemberType): string {
+    switch (memberType) {
+      case MemberType.UNDERGRADUATE:
+        return 'Undergraduate';
+      case MemberType.POSTGRADUATE:
+        return 'Postgraduate';
+      case MemberType.PHD:
+        return 'PhD';
+      case MemberType.TEACHER:
+        return 'Teacher';
+      default:
+        return '';
+    }
+  }
 }

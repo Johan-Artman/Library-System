@@ -179,4 +179,8 @@ export class BooksComponent implements OnInit {
       );
     }
   }
+
+  trackByIsbn(index: number, book: Book): number {
+    return book.isbn;
+  }
 }

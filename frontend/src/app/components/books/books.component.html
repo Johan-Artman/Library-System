@@ -1,172 +1,209 @@
-<div class="books-container">
-  <h2>Library Books</h2>
-  
-  <!-- Search Section -      <thead>
-        <tr>
-          <th>ISBN</th>
-          <th>Title</th>
-          <th>Available Copies</th>
-          <th>Location</th>
-          <th>Floor</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let book of books">
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.title }}</td>
-          <td>{{ book.availableCopies }}</td>
-          <td>{{ book.shelfLocation }}</td>
-          <td>Floor {{ book.floorLevel }}</td>ss="search-section">
-    <div class="search-bar">
-      <input 
-        type="text" 
-        class="search-input" 
-        placeholder="Search books by title..." 
-        [(ngModel)]="searchQuery"
-        (keyup.enter)="searchBooks()"
-        (input)="searchQuery.length === 0 ? clearSearch() : null">
-      <button class="btn btn-search" (click)="searchBooks()" [disabled]="isSearching">
-        <span *ngIf="!isSearching">🔍</span>
-        <span *ngIf="isSearching">⏳</span>
-      </button>
-      <button class="btn btn-clear" (click)="clearSearch()" *ngIf="searchQuery.length > 0">
-        ✕
-      </button>
-    </div>
-    <p class="search-results" *ngIf="searchQuery.length > 0">
-      {{ filteredBooks.length }} result(s) for "{{ searchQuery }}"
-    </p>
+<div class="books-container animate-fade-in">
+  <div class="page-header">
+    <h1 class="page-title">📚 Library Books</h1>
+    <p class="page-subtitle">Discover and manage our extensive collection of books</p>
   </div>
   
-    <!-- Actions -->
-  <div class="actions">
-    <button class="btn btn-primary" (click)="toggleAddForm()">
-      {{ showAddForm ? 'Cancel' : 'Add New Book' }}
-    </button>
-    <div class="filter-section">
-      <label for="floorFilter">Filter by Floor:</label>
-      <select id="floorFilter" (change)="filterByFloor($event)">
-        <option value="">All Floors</option>
-        <option value="1">Floor 1</option>
-        <option value="2">Floor 2</option>
-        <option value="3">Floor 3</option>
-      </select>
+  <!-- Search Section -->
+  <div class="card mb-6">
+    <div class="search-section">
+      <div class="search-bar">
+        <div class="search-input-group">
+          <input 
+            type="text" 
+            class="form-input search-input" 
+            placeholder="Search books by title..." 
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="searchBooks()"
+            (input)="searchQuery.length === 0 ? clearSearch() : null">
+          <button class="btn btn-primary search-btn" (click)="searchBooks()" [disabled]="isSearching">
+            <span *ngIf="!isSearching">🔍</span>
+            <span *ngIf="isSearching" class="loading">⏳</span>
+          </button>
+        </div>
+        <button class="btn btn-ghost" (click)="clearSearch()" *ngIf="searchQuery.length > 0">
+          Clear
+        </button>
+      </div>
+      <div class="search-results" *ngIf="searchQuery.length > 0">
+        <span class="result-count">{{ filteredBooks.length }}</span> result(s) for "<strong>{{ searchQuery }}</strong>"
+      </div>
     </div>
   </div>
-
-  <!-- Actions for Lenders -->
-  <div class="actions" *ngIf="!isLibrarian">
-    <button class="btn btn-secondary" (click)="toggleLocationView()">
-      {{ showLocation ? 'Hide Location' : 'Show Library Map' }}
-    </button>
-  </div>
-
-  <!-- Add Book Form (Only for Librarians) -->
-  <div class="add-book-form" *ngIf="showAddForm && isLibrarian">
-    <h3>Add New Book</h3>
-    <form (ngSubmit)="addBook()" #addForm="ngForm">
-      <div class="form-group">
-        <label for="isbn">ISBN:</label>
-        <input type="number" id="isbn" name="isbn" [(ngModel)]="newBook.isbn" required>
-      </div>
-      <div class="form-group">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" [(ngModel)]="newBook.title" required>
-      </div>
-      <div class="form-group">
-        <label for="availableCopies">Available Copies:</label>
-        <input type="number" id="availableCopies" name="availableCopies" [(ngModel)]="newBook.availableCopies" required min="0">
-      </div>
-      <div class="form-group">
-        <label for="shelfLocation">Shelf Location:</label>
-        <input type="text" id="shelfLocation" name="shelfLocation" [(ngModel)]="newBook.shelfLocation" required>
-      </div>
-      <div class="form-group">
-        <label for="floorLevel">Floor Level:</label>
-        <select id="floorLevel" name="floorLevel" [(ngModel)]="newBook.floorLevel" required>
+  
+  <!-- Actions Card -->
+  <div class="card mb-6">
+    <div class="card-header">
+      <h3 class="card-title">Actions</h3>
+    </div>
+    <div class="actions-grid">
+      <button class="btn btn-primary" (click)="toggleAddForm()" *ngIf="isLibrarian">
+        <span>{{ showAddForm ? '✕ Cancel' : '➕ Add New Book' }}</span>
+      </button>
+      
+      <div class="filter-group">
+        <label class="form-label" for="floorFilter">Filter by Floor:</label>
+        <select class="form-select" id="floorFilter" (change)="filterByFloor($event)">
+          <option value="">All Floors</option>
           <option value="1">Floor 1</option>
           <option value="2">Floor 2</option>
           <option value="3">Floor 3</option>
         </select>
       </div>
+      
+      <button class="btn btn-secondary" (click)="toggleLocationView()" *ngIf="!isLibrarian">
+        <span>{{ showLocation ? '🗺️ Hide Map' : '📍 Show Library Map' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Book Form (Only for Librarians) -->
+  <div class="card form-card mb-6" *ngIf="showAddForm && isLibrarian">
+    <div class="card-header">
+      <h3 class="card-title">➕ Add New Book</h3>
+      <p class="card-description">Fill in the details to add a new book to the library</p>
+    </div>
+    <form (ngSubmit)="addBook()" #addForm="ngForm" class="book-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="isbn">ISBN</label>
+          <input type="number" id="isbn" name="isbn" class="form-input" [(ngModel)]="newBook.isbn" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="title">Title</label>
+          <input type="text" id="title" name="title" class="form-input" [(ngModel)]="newBook.title" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="availableCopies">Available Copies</label>
+          <input type="number" id="availableCopies" name="availableCopies" class="form-input" [(ngModel)]="newBook.availableCopies" required min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="shelfLocation">Shelf Location</label>
+          <input type="text" id="shelfLocation" name="shelfLocation" class="form-input" [(ngModel)]="newBook.shelfLocation" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="floorLevel">Floor Level</label>
+          <select id="floorLevel" name="floorLevel" class="form-select" [(ngModel)]="newBook.floorLevel" required>
+            <option value="1">Floor 1</option>
+            <option value="2">Floor 2</option>
+            <option value="3">Floor 3</option>
+          </select>
+        </div>
+      </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-success" [disabled]="!addForm.valid">Add Book</button>
-        <button type="button" class="btn btn-secondary" (click)="toggleAddForm()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!addForm.valid">
+          ✅ Add Book
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="toggleAddForm()">
+          Cancel
+        </button>
       </div>
     </form>
   </div>
 
   <!-- Books List -->
-  <div class="books-list">
-    <table class="books-table">
-      <thead>
-        <tr>
-          <th>ISBN</th>
-          <th>Title</th>
-          <th>Available Copies</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let book of filteredBooks">
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.title }}</td>
-          <td>{{ book.availableCopies }}</td>
-          <td class="actions-cell">
-            <button class="btn btn-sm btn-location" (click)="showBookLocation(book)">📍 Location</button>
-            <button class="btn btn-sm btn-info" (click)="selectBook(book)" *ngIf="isLibrarian">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="deleteBook(book.isbn)" *ngIf="isLibrarian">Delete</button>
-          </td>
-        </tr>
-        <tr *ngIf="filteredBooks.length === 0">
-          <td [attr.colspan]="4" class="no-results">
-            {{ searchQuery ? 'No books found matching your search.' : 'No books available.' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Book Collection</h3>
+      <span class="book-count">{{ filteredBooks.length }} books</span>
+    </div>
+    
+    <div class="books-grid" *ngIf="filteredBooks.length > 0">
+      <div class="book-card" *ngFor="let book of filteredBooks; trackBy: trackByIsbn">
+        <div class="book-header">
+          <h4 class="book-title">{{ book.title }}</h4>
+          <span class="book-isbn">ISBN: {{ book.isbn }}</span>
+        </div>
+        <div class="book-details">
+          <div class="book-stat">
+            <span class="stat-label">Available Copies</span>
+            <span class="stat-value copies-badge" 
+                  [class.low-stock]="book.availableCopies <= 2"
+                  [class.out-of-stock]="book.availableCopies === 0">
+              {{ book.availableCopies }}
+            </span>
+          </div>
+          <div class="book-stat" *ngIf="book.shelfLocation">
+            <span class="stat-label">Location</span>
+            <span class="stat-value">{{ book.shelfLocation }}, Floor {{ book.floorLevel }}</span>
+          </div>
+        </div>
+        <div class="book-actions">
+          <button class="btn btn-sm btn-secondary" (click)="showBookLocation(book)">
+            📍 Location
+          </button>
+          <button class="btn btn-sm btn-primary" (click)="selectBook(book)" *ngIf="isLibrarian">
+            ✏️ Edit
+          </button>
+          <button class="btn btn-sm btn-ghost text-error" (click)="deleteBook(book.isbn)" *ngIf="isLibrarian">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="empty-state" *ngIf="filteredBooks.length === 0">
+      <div class="empty-icon">📚</div>
+      <h3 class="empty-title">{{ searchQuery ? 'No books found' : 'No books available' }}</h3>
+      <p class="empty-description">
+        {{ searchQuery ? 'Try adjusting your search terms.' : 'Start by adding some books to the library.' }}
+      </p>
+    </div>
   </div>
 
   <!-- Edit Book Form (Only for Librarians) -->
-  <div class="edit-book-form" *ngIf="selectedBook && isLibrarian">
-    <h3>Edit Book</h3>
-    <form (ngSubmit)="updateBook()" #editForm="ngForm">
-      <div class="form-group">
-        <label for="editIsbn">ISBN:</label>
-        <input type="number" id="editIsbn" name="editIsbn" [(ngModel)]="selectedBook.isbn" required readonly>
-      </div>
-      <div class="form-group">
-        <label for="editTitle">Title:</label>
-        <input type="text" id="editTitle" name="editTitle" [(ngModel)]="selectedBook.title" required>
-      </div>
-      <div class="form-group">
-        <label for="editAvailableCopies">Available Copies:</label>
-        <input type="number" id="editAvailableCopies" name="editAvailableCopies" [(ngModel)]="selectedBook.availableCopies" required min="0">
-      </div>
-      <div class="form-group">
-        <label for="editShelfLocation">Shelf Location:</label>
-        <input type="text" id="editShelfLocation" name="editShelfLocation" [(ngModel)]="selectedBook.shelfLocation" required>
-      </div>
-      <div class="form-group">
-        <label for="editFloorLevel">Floor Level:</label>
-        <select id="editFloorLevel" name="editFloorLevel" [(ngModel)]="selectedBook.floorLevel" required>
-          <option value="1">Floor 1</option>
-          <option value="2">Floor 2</option>
-          <option value="3">Floor 3</option>
-        </select>
+  <div class="card form-card mt-6" *ngIf="selectedBook && isLibrarian">
+    <div class="card-header">
+      <h3 class="card-title">✏️ Edit Book</h3>
+      <p class="card-description">Update the book information below</p>
+    </div>
+    <form (ngSubmit)="updateBook()" #editForm="ngForm" class="book-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="editIsbn">ISBN</label>
+          <input type="number" id="editIsbn" name="editIsbn" class="form-input" [(ngModel)]="selectedBook.isbn" required readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editTitle">Title</label>
+          <input type="text" id="editTitle" name="editTitle" class="form-input" [(ngModel)]="selectedBook.title" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editAvailableCopies">Available Copies</label>
+          <input type="number" id="editAvailableCopies" name="editAvailableCopies" class="form-input" [(ngModel)]="selectedBook.availableCopies" required min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editShelfLocation">Shelf Location</label>
+          <input type="text" id="editShelfLocation" name="editShelfLocation" class="form-input" [(ngModel)]="selectedBook.shelfLocation" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editFloorLevel">Floor Level</label>
+          <select id="editFloorLevel" name="editFloorLevel" class="form-select" [(ngModel)]="selectedBook.floorLevel" required>
+            <option value="1">Floor 1</option>
+            <option value="2">Floor 2</option>
+            <option value="3">Floor 3</option>
+          </select>
+        </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Update Book</button>
-        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!editForm.valid">
+          💾 Update Book
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+          Cancel
+        </button>
       </div>
     </form>
   </div>
 
   <!-- Library Map -->
-  <app-library-map 
-    *ngIf="showLocation"
-    [selectedBookIsbn]="selectedBook?.isbn"
-    [showAllBooks]="!selectedBook">
-  </app-library-map>
+  <div class="card mt-6" *ngIf="showLocation">
+    <div class="card-header">
+      <h3 class="card-title">🗺️ Library Map</h3>
+      <p class="card-description">Navigate through the library floors</p>
+    </div>
+    <app-library-map 
+      [selectedBookIsbn]="selectedBook?.isbn"
+      [showAllBooks]="!selectedBook">
+    </app-library-map>
+  </div>
 </div>
