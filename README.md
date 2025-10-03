@@ -35,7 +35,7 @@ A modern, full-stack library management system built with Java Spring Boot backe
 
 The system follows a modern three-tier architecture:
 
-1. **Presentation Layer** (Frontend): HTML/CSS/JavaScript web interface
+1. **Presentation Layer** (Frontend): Angular single-page application
 2. **Business Logic Layer** (Controllers): Spring Boot REST controllers
 3. **Data Access Layer** (Backend Services): Java classes with SQLite integration
 
@@ -47,15 +47,18 @@ Before you begin, ensure you have the following installed:
 
 - **Java 17** or higher ([Download OpenJDK](https://openjdk.org/install/))
 - **Apache Maven 3.8+** ([Download Maven](https://maven.apache.org/download.cgi))
+- **Node.js 18+** and **npm** ([Download Node.js](https://nodejs.org/))
+- **Angular CLI 20+** (install with `npm install -g @angular/cli`)
 - **Git** for version control
-- **Python 3** (for serving the frontend during development)
 - **Modern web browser** (Chrome, Firefox, Safari, or Edge)
 
 ### Verify Installation
 ```bash
 java -version    # Should show Java 17+
 mvn -version     # Should show Maven 3.8+
-python3 --version # Should show Python 3.x
+node -v          # Should show Node.js 18+
+npm -v           # Should show npm 9+
+ng version       # Should show Angular CLI 20+
 ```
 
 ## 🏗️ Project Structure
@@ -79,8 +82,15 @@ Library-System/
 │   ├── setup_sqlite.sql        # Database schema and sample data
 │   ├── library.db              # SQLite database file
 │   └── perma_banned_members.txt # Permanently banned members list
-├── frontend/                   # Web application
-│   └── index.html              # Single-page application for API testing
+├── frontend/                   # Angular web application
+│   ├── src/
+│   │   ├── app/                # Angular components and services
+│   │   ├── index.html          # Main HTML template
+│   │   ├── main.ts             # Application bootstrap
+│   │   └── styles.css          # Global styles
+│   ├── angular.json            # Angular CLI configuration
+│   ├── package.json            # npm dependencies
+│   └── tsconfig.json           # TypeScript configuration
 └── README.md                   # Project documentation (this file)
 ```
 
@@ -104,13 +114,14 @@ mvn spring-boot:run        # Start the Spring Boot application
 Open a new terminal window:
 ```bash
 cd frontend
-python3 -m http.server 3000    # Start simple HTTP server
-# Alternative: python -m http.server 3000 (Python 2.x)
+npm install                    # Install dependencies (first time only)
+ng serve                       # Start Angular development server
+# Alternative: npm start
 ```
-✅ Frontend will be available at: **http://localhost:3000**
+✅ Frontend will be available at: **http://localhost:4200**
 
 ### Step 4: Test the System
-1. Open your browser and navigate to **http://localhost:3000**
+1. Open your browser and navigate to **http://localhost:4200**
 2. Try the sample operations:
    - Search for book ISBN: `9780743273565` (The Great Gatsby)
    - Add a new member
@@ -185,16 +196,20 @@ curl -X POST "http://localhost:8080/api/lending/return?memberId=1&isbn=978074327
 | **Mockito** | 5.3.1 | Mocking framework for tests |
 
 ### Frontend Technologies
-| Technology | Purpose |
-|------------|---------|
-| **HTML5** | Semantic markup and structure |
-| **CSS3** | Styling and responsive design |
-| **JavaScript (ES6+)** | Interactive functionality |
-| **Fetch API** | HTTP requests to backend |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Angular** | 20.3.0 | Modern web framework |
+| **TypeScript** | 5.9.2 | Type-safe programming language |
+| **RxJS** | 7.8.0 | Reactive programming library |
+| **Angular Router** | 20.3.0 | Client-side navigation |
+| **Angular CLI** | 20.3.3 | Development tools and scaffolding |
+| **Karma/Jasmine** | 6.4.0/5.9.0 | Unit testing framework |
 
 ### Development Tools
 - **Git** - Version control
 - **Maven** - Build automation
+- **npm** - JavaScript package manager
+- **Angular CLI** - Angular development tools
 - **Spring Boot DevTools** - Hot reload during development
 
 ## 🗄️ Database
@@ -296,19 +311,36 @@ mvn spring-boot:run                    # Start with hot reload
 mvn spring-boot:run -Dspring-boot.run.profiles=dev  # Development profile
 ```
 
+#### Frontend Development
+```bash
+cd frontend
+npm install                            # Install dependencies (first time)
+ng serve                               # Start development server with hot reload
+ng serve --open                        # Start and open browser automatically
+ng build                               # Build for production
+ng test                                # Run unit tests
+```
+
 #### Development Commands
 ```bash
+# Backend
 mvn clean compile                      # Compile source code
 mvn test                              # Run unit tests
 mvn clean package                     # Build JAR file
 mvn spring-boot:run -Dspring.profiles.active=dev  # Run with dev profile
+
+# Frontend
+ng generate component component-name  # Generate new component
+ng build --configuration production   # Production build
+ng test --code-coverage               # Run tests with coverage
 ```
 
 #### Hot Reload
 The application supports hot reload for rapid development:
 - Java classes automatically recompile when saved
 - Configuration changes are applied without restart
-- Frontend changes are immediately visible with browser refresh
+- Angular development server automatically reloads on file changes
+- TypeScript compilation happens automatically
 
 ### Adding New Features
 
@@ -332,9 +364,11 @@ public class YourController {
 3. Restart application to regenerate database with new schema
 
 #### 3. Frontend Enhancements
-- Edit `frontend/index.html` for UI changes
-- Add new JavaScript functions for API calls
-- Update CSS for styling improvements
+- Create new Angular components with `ng generate component component-name`
+- Add services for API calls with `ng generate service service-name`
+- Update component templates (`.html` files) for UI changes
+- Edit component styles (`.css` files) for styling improvements
+- Use Angular Router for navigation between views
 
 ### Code Quality
 ```bash
